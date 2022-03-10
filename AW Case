@@ -1,0 +1,40 @@
+
+-- Simple CASE statement to display employee promotion status.
+
+Select FirstName , LastName,
+CASE
+WHEN EmailPromotion = 0 THEN 'Promotion1'
+WHEN EmailPromotion = 1 THEN 'Promotion2'
+WHEN EmailPromotion = 2 THEN 'Promotion3'
+END AS Promotion
+from Person.Person
+
+
+-- Display the length of the string
+Select FirstName,
+CASE
+WHEN LEN(FirstName) >10 THEN 'LongName'
+Else 'ShortName'
+END AS NameLength
+from Person.Person
+
+--Finding out how many sales fell into the following ranges
+
+WITH SalesRanges
+AS (
+SELECT
+CASE
+WHEN TotalDue BETWEEN 0 AND 149.99 THEN '$0 to $149.99'
+WHEN TotalDue BETWEEN 150 AND 499.99 THEN '$150 to $499.99'
+WHEN TotalDue BETWEEN 500 AND 4999.99 THEN '$500 to $4,999.99'
+WHEN TotalDue BETWEEN 5000 AND 24999.99 THEN '$5,000 to $24,999.99'
+ELSE 'Over $25,000'
+END AS SalesPriceRange,
+SalesOrderID
+FROM Sales.SalesOrderHeader
+WHERE SalesPersonID IS NOT NULL
+)
+SELECT SalesPriceRange,
+COUNT(*)
+FROM SalesRanges
+GROUP BY SalesPriceRange
