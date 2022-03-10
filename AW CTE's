@@ -1,0 +1,56 @@
+
+--find out, for each year the company hired new employees,
+--how many employees the company hired for each year and how many employees they hired the previous year.
+--Use the HumanResources.Employee table
+
+With Hires
+         As
+         (
+             Select Year(HireDate) AS HireYear ,
+    BusinessEntityID
+from HumanResources.Employee
+    ) , HiresbyDate
+    AS (
+Select HireYear , Count(*) AS HireCount
+from Hires
+Group by HireYear
+    )
+Select H1.HireYear , H1.HireCount , H2.HireCount
+from HiresbyDate H1
+         LEFT OUTER JOIN HiresbyDate H2
+                         ON H1.HireYear = H2.HireYear +1
+
+
+
+--find the number of products that began selling per year using the Production.Product table.
+
+With ProductName
+As
+(
+Select Year(SellStartDate) AS PerYear , ProductID
+from Production.Product
+)
+
+Select PerYear , Count(*) AS ProductCount
+from ProductName
+Group by PerYear
+
+
+--Using  Sales.SalesOrderHeader table, find each month’s total sales for the year 2006.
+--No functions should be used in either the WHERE or the GROUP BY clause of your SELECT statement.
+
+
+With SalesMonth
+AS
+(
+Select  TotalDue , Month(OrderDate) AS OrderMonth
+from Sales.SalesOrderHeader
+Where Year(OrderDate) = 2006
+)
+
+Select OrderMonth , Sum(TotalDue)
+from SalesMonth
+Group by OrderMonth
+
+
+
