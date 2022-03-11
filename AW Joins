@@ -1,0 +1,21 @@
+Select SP.BusinessEntityID ID , SP.SalesYTD , ST.Name AS [Territory Name]
+from Sales.SalesPerson SP
+LEFT JOIN Sales.SalesTerritory ST
+ON ST.TerritoryID = SP.TerritoryID
+
+
+Select SP.BusinessEntityID ID , SP.SalesYTD , ST.Name AS [Territory Name] , PP.FirstName , PP.LastName
+from Sales.SalesPerson SP
+LEFT JOIN Sales.SalesTerritory ST
+ON ST.TerritoryID = SP.TerritoryID
+LEFT JOIN Person.Person PP
+ON SP.BusinessEntityID = PP.BusinessEntityID
+Where Name IN ('Northeast' , 'Central')
+
+Select PP.Name , PP.ListPrice , PS.Name AS [ProdutSubCategoryName] , PC.Name AS [Product.CategoryName]
+from Production.Product  PP
+LEFT OUTER JOIN Production.SubCategory PS
+ON PS.Product.SubCategoryID = PP.ProductSubcategoryID
+LEFT OUTER JOIN Prodction.ProductCategory PC
+ON PC.Product.CategoryID = PS.ProductCategoryID
+ORDER by ProductCategoryName DESC , ProductSubCategoryName ASC
